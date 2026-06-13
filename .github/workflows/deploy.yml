@@ -1,0 +1,42 @@
+name: Frontend
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: |
+          docker build \
+            --build-arg VITE_API_BASE_URL="${{ vars.VITE_API_BASE_URL }}" \
+            -t inventory-app/frontend:${{ github.sha }} .
+
+      - name: Import image into k3s
+        run: docker save inventory-app/frontend:${{ github.sha }} | sudo k3s ctr images import -
+
+      - name: Deploy
+        run: |
+          sed -i "s|image: inventory-app/frontend:.*|image: inventory-app/frontend:${{ github.sha }}|" k8s/deployment.yaml
+          kubectl apply -f k8s/
+          kubectl rollout status deployment/frontend -n inventory-app
