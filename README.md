@@ -89,3 +89,4 @@ and shown to the user as an error toast rather than a silent failure.
    the server response, with clearer messaging when an item sells out mid-flow.
 4. **Accessibility & polish** focus management, form-level validation messages,
    and loading skeletons.
+
