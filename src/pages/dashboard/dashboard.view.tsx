@@ -51,7 +51,7 @@ export function DashboardView() {
       </header>
 
       <main>
-        {vm.isAuthenticated && (
+        {vm.isAdmin && (
           <div className="mb-8">
             <AddProductForm disabled={vm.isMutating} onAdd={vm.addProduct} />
           </div>
@@ -78,8 +78,8 @@ export function DashboardView() {
               <ProductTable
                 products={vm.products}
                 busy={vm.isMutating}
-                onEdit={vm.isAuthenticated ? setEditing : undefined}
-                onDelete={vm.isAuthenticated ? vm.deleteProduct : undefined}
+                onEdit={vm.isAdmin ? setEditing : undefined}
+                onDelete={vm.isAdmin ? vm.deleteProduct : undefined}
               />
               <Pagination
                 page={vm.page}

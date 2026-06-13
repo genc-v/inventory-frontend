@@ -15,6 +15,7 @@ export interface DashboardViewModel {
   loadError: string | null;
   isMutating: boolean;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   email: string | null;
   load: () => Promise<void>;
   nextPage: () => void;

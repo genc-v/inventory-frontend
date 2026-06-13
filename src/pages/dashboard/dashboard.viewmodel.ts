@@ -129,6 +129,7 @@ export function useDashboardViewModel(): DashboardViewModel {
     loadError,
     isMutating,
     isAuthenticated,
+    isAdmin: session?.user.isAdmin ?? false,
     email: session?.user.email ?? null,
     load,
     nextPage,
