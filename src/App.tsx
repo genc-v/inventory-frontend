@@ -1,7 +1,18 @@
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router';
+import { Toaster } from 'sonner';
+import { AuthProvider } from './auth/auth_provider';
+import { LoginView } from './pages/login/login.view';
+
+const router = createBrowserRouter([
+  { path: '/login', element: <LoginView /> },
+  { path: '*', element: <Navigate to="/login" replace /> },
+]);
+
 export function App() {
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <h1 className="text-2xl font-semibold">Inventory</h1>
-    </main>
+    <AuthProvider>
+      <RouterProvider router={router} />
+      <Toaster richColors position="bottom-center" />
+    </AuthProvider>
   );
 }
